@@ -39,5 +39,6 @@
     "version": "0.76.2",
     "source": "https://github.com/aquasecurity/trivy/releases/tag/v0.76.2"
   },
-  "base_image": "python:3.13-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72"
+  "base_image": "python:3.13-alpine@sha256:1e1f6334529d1fb26a2ef619d7cffb30a7c7d7cc1cc7338ebee283a58d1aeaca",
+  "previous_base_image": "python:3.13-slim-bookworm@sha256:a5a7017efc5969e00ae2b91c8eb0631049a569652aa4ffc4501769049ae45c72"
 }
