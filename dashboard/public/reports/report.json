@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "kind": "laboratory_execution",
+  "application": "ReleaseGuard Lab API 1.0.0",
+  "metadata": {
+    "generated_at": "2026-11-06T16:47:51.519070+00:00",
+    "commit": "b6e5c16b793f8bda4a66a54e05c1d0643ff6a0ae",
+    "dirty": true,
+    "origin": "local",
+    "run_url": null,
+    "repository_url": null,
+    "tools": {
+      "python": "3.13.13",
+      "fastapi": "0.162.0",
+      "uvicorn": "0.54.0",
+      "pytest": "9.2.0",
+      "docker": null,
+      "trivy": null
+    }
+  },
+  "policy": {
+    "id": "releaseguard-v1",
+    "blocking_severities": [
+      "HIGH",
+      "CRITICAL"
+    ],
+    "include_unfixed": true,
+    "rule": "Todos los controles deben pasar. HIGH y CRITICAL bloquean, exista o no corrección."
+  },
+  "scenarios": [
+    {
+      "id": "candidate",
+      "title": "Versión candidata",
+      "target": "runtime",
+      "change": "La API responde y se ejecuta sin privilegios.",
+      "fix": "Mantener todos los controles en verde y revisar el informe de Trivy.",
+      "expected_failure": null,
+      "checks": {
+        "tests": {
+          "status": "pass",
+          "detail": "pytest terminó con código 0.",
+          "observed": {
+            "tests": 25,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "build": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "health": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "nonroot": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "scan": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        }
+      },
+      "decision": "incomplete",
+      "image_id": null,
+      "assertion": {
+        "status": "fail",
+        "mismatches": [
+          "build: esperado pass, observado not_run",
+          "health: esperado pass, observado not_run",
+          "nonroot: esperado pass, observado not_run",
+          "scan: esperado pass, observado not_run"
+        ]
+      }
+    },
+    {
+      "id": "health-failure",
+      "title": "Fallo de salud",
+      "target": "broken-health",
+      "change": "El endpoint /health devuelve HTTP 503.",
+      "fix": "Restaurar /health para devolver HTTP 200 y status: ok. Reconstruir con el target runtime.",
+      "expected_failure": "health",
+      "checks": {
+        "tests": {
+          "status": "pass",
+          "detail": "pytest terminó con código 0.",
+          "observed": {
+            "tests": 25,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "build": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "health": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "nonroot": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "scan": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        }
+      },
+      "decision": "incomplete",
+      "image_id": null,
+      "assertion": {
+        "status": "fail",
+        "mismatches": [
+          "build: esperado pass, observado not_run",
+          "health: esperado fail, observado not_run",
+          "nonroot: esperado pass, observado not_run",
+          "scan: esperado pass, observado not_run"
+        ]
+      }
+    },
+    {
+      "id": "root-user",
+      "title": "Usuario privilegiado",
+      "target": "root-user",
+      "change": "El proceso se ejecuta con UID 0.",
+      "fix": "Restaurar USER 10001:10001. Reconstruir con el target runtime.",
+      "expected_failure": "nonroot",
+      "checks": {
+        "tests": {
+          "status": "pass",
+          "detail": "pytest terminó con código 0.",
+          "observed": {
+            "tests": 25,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 0
+          }
+        },
+        "build": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "health": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "nonroot": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        },
+        "scan": {
+          "status": "not_run",
+          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+        }
+      },
+      "decision": "incomplete",
+      "image_id": null,
+      "assertion": {
+        "status": "fail",
+        "mismatches": [
+          "build: esperado pass, observado not_run",
+          "health: esperado pass, observado not_run",
+          "nonroot: esperado fail, observado not_run",
+          "scan: esperado pass, observado not_run"
+        ]
+      }
+    }
+  ],
+  "laboratory_status": "fail",
+  "application_decision": "incomplete",
+  "files": [
+    {
+      "path": "docker-preflight.log",
+      "sha256": "189eafd351ec9d4b6d50cb0946920dff35b6d015ceb79da855edb778d014a5da"
+    },
+    {
+      "path": "tests.log",
+      "sha256": "bf434d92d4ff14f6bb37d4d6ad7c93d144c1b0b8a5d5f21ed34db6ba35ffb339"
+    },
+    {
+      "path": "tests.xml",
+      "sha256": "91fa0c4c494535bdb3c8bf050708f43a4aa8179e0866e3232e09cd9fbed3d9ae"
+    }
+  ]
+}

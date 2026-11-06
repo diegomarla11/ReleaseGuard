@@ -1,0 +1,122 @@
+name: ReleaseGuard
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: releaseguard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  laboratory:
+    name: Laboratory expectations
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+      - name: Install locked test dependencies
+        run: python -m pip install --require-hashes -r requirements-dev.txt
+      - name: Install checksum-verified Trivy
+        id: trivy
+        # A scanner outage must still produce an explicit not_run report.
+        continue-on-error: true
+        run: bash scripts/install_trivy.sh
+      - name: Add scanner to PATH
+        run: echo "$GITHUB_WORKSPACE/.tools" >> "$GITHUB_PATH"
+      - name: Run real laboratory and assert exact expected failures
+        id: lab
+        run: python -m scripts.run_lab --output artifacts/ci --export-approved-image
+      - name: Upload raw evidence even if the application is blocked
+        if: ${{ always() && steps.lab.outcome != 'skipped' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: laboratory-evidence
+          path: |
+            artifacts/ci/**
+            !artifacts/ci/approved-image.tar
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload only an approved candidate image
+        if: ${{ always() && hashFiles('artifacts/ci/approved-image.tar') != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: approved-candidate-image
+          path: artifacts/ci/approved-image.tar
+          if-no-files-found: error
+          retention-days: 7
+
+  application-gate:
+    name: Application release gate
+    needs: laboratory
+    if: ${{ always() && needs.laboratory.result != 'cancelled' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: laboratory-evidence
+          path: artifacts/ci
+      - name: Require all candidate controls to pass
+        run: python -m scripts.check_gate artifacts/ci/report.json
+
+  dashboard:
+    name: Build evidence dashboard
+    needs: laboratory
+    # Runs on PRs without publication permissions, and also when expected assertions fail.
+    if: ${{ always() && needs.laboratory.result != 'cancelled' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22.22.3'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: laboratory-evidence
+          path: artifacts/ci
+      - name: Validate evidence and copy only allowed files
+        run: python -m scripts.export_dashboard artifacts/ci dashboard/public/reports
+      - name: Build dashboard with current reports
+        working-directory: dashboard
+        run: |
+          npm ci
+          npm run build
+      - name: Upload static dashboard for Pages
+        if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dashboard/dist
+
+  deploy-evidence:
+    name: Publish evidence, never the laboratory API
+    needs: dashboard
+    if: ${{ always() && needs.dashboard.result == 'success' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # No checkout, source execution or package install in the privileged job.
+      - name: Deploy the static artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

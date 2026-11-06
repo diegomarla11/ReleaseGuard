@@ -1,0 +1,7 @@
+*
+!api/
+!api/*.py
+!laboratory/
+!laboratory/broken_health.py
+!requirements.txt
+!Dockerfile
