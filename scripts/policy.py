@@ -24,8 +24,12 @@ def evaluate_scan(document):
     if not isinstance(results, list) or not results:
         raise ValueError("Faltan resultados: no se interpreta un informe vacío como seguro")
     # A minimal Python image must contain an OS package inventory to be assessable.
-    if not any(r.get("Class") == "os-pkgs" for r in results):
-        raise ValueError("No se ha identificado el sistema operativo de la imagen")
+    os_results = [r for r in results if r.get("Class") == "os-pkgs"]
+    python_results = [r for r in results if r.get("Type") == "python-pkg"]
+    if not any(r.get("Packages") for r in os_results):
+        raise ValueError("No se ha identificado el inventario del sistema operativo")
+    if not any(p.get("Name") == "fastapi" for r in python_results for p in r.get("Packages", [])):
+        raise ValueError("No se ha identificado FastAPI en el inventario Python")
     counts = {severity: 0 for severity in ("UNKNOWN", "LOW", "MEDIUM", "HIGH", "CRITICAL")}
     findings = []
     for result in results:

@@ -56,3 +56,29 @@ def test_probe_uses_measured_http_and_process_credentials(monkeypatch, tmp_path,
     health, user = probe_container('arbitrary-container-name', tmp_path)
     assert health['status'] == health_result
     assert user['status'] == user_result
+
+
+def test_startup_error_is_not_the_expected_health_failure(monkeypatch, tmp_path):
+    def fake_run(command, timeout=300):
+        if 'inspect' in command:
+            return 0, json.dumps({'Status': 'unhealthy'})
+        if '/proc/1/status' in command[-1]:
+            return 0, json.dumps({'uids': [10001] * 4})
+        return 1, 'Connection refused'
+    monkeypatch.setattr('scripts.run_lab.run', fake_run)
+    monkeypatch.setattr('scripts.run_lab.time.sleep', lambda _: None)
+    health, user = probe_container('any-name', tmp_path)
+    assert health['status'] == 'error'
+    assert user['status'] == 'pass'
+
+
+def test_symlink_cannot_export_files_outside_evidence(tmp_path):
+    source = tmp_path / 'source'
+    source.mkdir()
+    report = report_for(source / 'test.log')
+    outside = tmp_path / 'outside.log'
+    outside.write_text('outside')
+    (source / 'test.log').unlink()
+    (source / 'test.log').symlink_to(outside)
+    with pytest.raises(ValueError, match='Ruta'):
+        validate(report, source)

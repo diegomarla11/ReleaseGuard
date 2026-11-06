@@ -210,6 +210,15 @@ def main():
             if rc != 0:
                 report["laboratory_status"] = "fail"
                 report["export_error"] = "No se pudo exportar la imagen aprobada"
+        # Capture database metadata AFTER the scan has actually downloaded its DB.
+        scanner_code, scanner_version = run(["trivy", "--version"], 20)
+        if scanner_code == 0:
+            meta["tools"]["trivy"] = scanner_version.strip()
+        meta["finished_at"] = datetime.now(timezone.utc).isoformat()
+        for scenario in report["scenarios"]:
+            print(json.dumps({"scenario": scenario["id"], "decision": scenario["decision"],
+                              "checks": {key: value["status"] for key, value in scenario["checks"].items()},
+                              "scan_counts": scenario["checks"]["scan"].get("counts")}, ensure_ascii=False))
         # Hash the raw evidence, excluding the optional large image and report itself.
         report["files"] = [{"path": str(p.relative_to(output)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
                            for p in sorted(output.rglob("*")) if p.is_file() and p.suffix != ".tar"]

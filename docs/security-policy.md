@@ -8,7 +8,7 @@ La aprobación requiere `tests`, `build`, `health`, `nonroot` y `scan` en `pass`
 - **build:** construcción Docker real del target, con log e identidad inmutable de la imagen resultante.
 - **health:** HTTP real contra `/health` dentro del contenedor, status 200 y JSON `{"status":"ok"}`, junto con el estado final del `HEALTHCHECK` de Docker. Un error de arranque o timeout se registra como error, no como el fallo HTTP esperado.
 - **nonroot:** los cuatro UID de `/proc/1/status` (real, efectivo, guardado y filesystem) deben ser mayores que cero. Consultar solo `Config.User` sería insuficiente para demostrar las credenciales del proceso. Una lectura inválida es error, no fallo esperado.
-- **scan:** Trivy sobre la imagen local ya construida, con inventario OS reconocido y resultados JSON v2. Se usa `--image-src docker` para no escanear por error una etiqueta remota del mismo nombre.
+- **scan:** Trivy sobre la imagen local ya construida, con inventarios OS y Python reconocidos (incluido FastAPI) y resultados JSON v2. Se usa `--image-src docker` para no escanear por error una etiqueta remota del mismo nombre.
 
 ## Vulnerabilidades
 

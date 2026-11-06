@@ -19,7 +19,7 @@
 | `laboratory_status` | Cumplimiento de las tres expectativas |
 | `files` | Rutas relativas de evidencia y sumas SHA-256 |
 
-Las versiones de Trivy incluyen la información de base que ofrece `trivy --version` al comienzo. Los JSON originales conservan `CreatedAt`, metadatos de imagen y cualquier dato de análisis que emita la herramienta. No se inventa una versión de base cuando Trivy no la devuelve. No se muestran porcentajes ni tiempos estimados; JUnit contiene las duraciones realmente medidas.
+Las versiones de Trivy incluyen la información de base que ofrece `trivy --version` al terminar el análisis, después de su descarga. `metadata.finished_at` registra el final de la recogida. Los JSON originales conservan `CreatedAt`, metadatos de imagen y cualquier dato de análisis que emita la herramienta. No se inventa una versión de base cuando Trivy no la devuelve. No se muestran porcentajes ni tiempos estimados; JUnit contiene las duraciones realmente medidas.
 
 El directorio de salida debe ser nuevo: así no se confunde un JSON antiguo con un scan fallido reciente. `export_dashboard` valida decisiones, rutas y hashes antes de copiar exclusivamente `.json`, `.xml` y `.log`; excluye la imagen Docker. Los informes locales pueden incluir rutas del entorno de desarrollo y logs de herramientas: revísalos antes de compartirlos.
 

@@ -27,7 +27,7 @@ def test_expected_failure_does_not_hide_other_errors(observed):
 
 
 def scan(vulns):
-    return {"SchemaVersion": 2, "ArtifactType": "container_image", "Results": [{"Class": "os-pkgs", "Vulnerabilities": vulns}]}
+    return {"SchemaVersion": 2, "ArtifactType": "container_image", "Results": [{"Class": "os-pkgs", "Packages": [{"Name": "fixture-os-package"}], "Vulnerabilities": vulns}, {"Class": "lang-pkgs", "Type": "python-pkg", "Packages": [{"Name": "fastapi"}]}]}
 
 
 @pytest.mark.parametrize("severity", ["HIGH", "CRITICAL"])
@@ -53,3 +53,17 @@ def test_invalid_scan_is_never_clean(document):
 
 def test_all_controls_pass():
     assert decide(checks()) == "approved"
+
+
+def test_os_only_scan_does_not_cover_this_python_application():
+    document = scan([])
+    document["Results"].pop()
+    with pytest.raises(ValueError, match="FastAPI"):
+        evaluate_scan(document)
+
+
+def test_empty_package_inventory_is_not_clean_evidence():
+    document = scan([])
+    document["Results"][0]["Packages"] = []
+    with pytest.raises(ValueError, match="inventario"):
+        evaluate_scan(document)
