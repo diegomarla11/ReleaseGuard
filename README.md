@@ -2,7 +2,7 @@
 
 **¿Publicarías este cambio?** Un laboratorio personal de Diego, graduado en Ingeniería Informática, que ejecuta pruebas y controles de contenedores antes de aprobar una API mínima.
 
-[Demo pública — publicación pendiente de verificar](https://diegomarla11.github.io/ReleaseGuard/) · [Repositorio](https://github.com/diegomarla11/ReleaseGuard) · [Informes guardados](dashboard/public/reports/report.json) · [Ejecuciones y artefactos](https://github.com/diegomarla11/ReleaseGuard/actions) · [Guía de entrevista](docs/interview.md)
+[Demo pública](https://diegomarla11.github.io/ReleaseGuard/) · [Repositorio](https://github.com/diegomarla11/ReleaseGuard) · [Informe público](https://diegomarla11.github.io/ReleaseGuard/reports/report.json) · [Informes guardados en Git](dashboard/public/reports/report.json) · [Ejecuciones y artefactos](https://github.com/diegomarla11/ReleaseGuard/actions) · [Guía de entrevista](docs/interview.md)
 
 > Proyecto de portfolio y aprendizaje. Complementa AccessLens con automatización de pruebas, Docker, CI/CD y seguridad de dependencias. No representa experiencia profesional ni una API desplegada en infraestructura cloud. GitHub Pages sirve únicamente archivos estáticos.
 
@@ -14,7 +14,7 @@
 4. Compara la candidata con un `/health` que devuelve 503 y con un proceso que usa UID 0. Los fallos se miden dentro de contenedores reales; el nombre del escenario no decide el resultado.
 5. Abre **Evidencias técnicas** para ver origen, fecha, commit, herramientas, imagen, ejecución y descargas originales.
 
-**Estado de entrega inicial:** pruebas locales y build del dashboard verificados. Docker y Trivy no están disponibles localmente. El informe local registra `No ejecutado` y decisión `Sin aprobar`. Consulta [la verificación de entrega](docs/verification.md) para el estado actualizado y las comprobaciones realmente realizadas. Los resultados de CI sustituyen este informe al construir Pages, sin modificar los datos guardados en Git.
+**Ejecución verificada:** [29 pruebas y los tres casos reales en GitHub Actions](https://github.com/diegomarla11/ReleaseGuard/actions/runs/42258176332). Candidata aprobada; HTTP 503 y UID 0 bloqueados por sus controles respectivos. La [remediación inicial](docs/remediation.md) conserva un bloqueo real de Trivy y el cambio de base que lo corrigió. Consulta [la verificación de entrega](docs/verification.md) para el commit analizado, las herramientas, la publicación y los límites de lo comprobado. Los informes en Git son una instantánea real; CI genera una nueva al publicar Pages.
 
 ## Arquitectura
 

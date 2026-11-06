@@ -9,3 +9,7 @@ La corrección cambia a la base oficial Python Alpine, fijada por digest, y reti
 La base anterior está registrada en `docs/toolchain.json` y el commit inicial permite reproducirla. Los [artefactos originales](https://github.com/diegomarla11/ReleaseGuard/actions/runs/42256605849/artifacts/13523411559) caducan a los 30 días. La evidencia también se conserva en [`evidence/initial-blocked.zip`](../evidence/initial-blocked.zip).
 
 La corrección solo será efectiva cuando una nueva ejecución complete los cinco controles. El resultado real, sus herramientas y los nuevos hallazgos se conservan en el informe de esa ejecución. Un cambio de base no es una garantía de ausencia de vulnerabilidades.
+
+## Resultado de la corrección
+
+La [ejecución 42258176332](https://github.com/diegomarla11/ReleaseGuard/actions/runs/42258176332), commit `795d9b55aed5ab36f28249a22241830e2224fbbb`, verificó los tres casos: candidata aprobada y negativos bloqueados únicamente por salud o usuario. Trivy completó el escaneo del sistema y Python, sin hallazgos en esa ejecución. Se conservó únicamente la imagen candidata como artefacto aprobado. La evidencia completa está en `dashboard/public/reports/`, con su fecha, commit y metadatos de base.

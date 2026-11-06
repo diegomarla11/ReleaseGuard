@@ -3,20 +3,21 @@
   "kind": "laboratory_execution",
   "application": "ReleaseGuard Lab API 1.0.0",
   "metadata": {
-    "generated_at": "2026-11-06T16:47:51.519070+00:00",
-    "commit": "b6e5c16b793f8bda4a66a54e05c1d0643ff6a0ae",
-    "dirty": true,
-    "origin": "local",
-    "run_url": null,
-    "repository_url": null,
+    "generated_at": "2026-11-06T17:04:46.561387+00:00",
+    "commit": "795d9b55aed5ab36f28249a22241830e2224fbbb",
+    "dirty": false,
+    "origin": "github_actions",
+    "run_url": "https://github.com/diegomarla11/ReleaseGuard/actions/runs/42258176332",
+    "repository_url": "https://github.com/diegomarla11/ReleaseGuard",
     "tools": {
-      "python": "3.13.13",
+      "python": "3.13.18",
       "fastapi": "0.162.0",
       "uvicorn": "0.54.0",
       "pytest": "9.2.0",
-      "docker": null,
-      "trivy": null
-    }
+      "docker": "{\"Client\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"DefaultAPIVersion\":\"1.48\",\"GitCommit\":\"b8034c0\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Context\":\"default\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Components\":[{\"Name\":\"Engine\",\"Version\":\"28.0.4\",\"Details\":{\"ApiVersion\":\"1.48\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Experimental\":\"false\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"KernelVersion\":\"7.0.0-1017-azure\",\"MinAPIVersion\":\"1.24\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.2\",\"Details\":{\"GitCommit\":\"b7a25261e029d68978bbf290df0a62fc819b3c51\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"MinAPIVersion\":\"1.24\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"KernelVersion\":\"7.0.0-1017-azure\",\"BuildTime\":\"2025-03-25T15:07:16.000000000+00:00\"}}",
+      "trivy": "Version: 0.76.2\nVulnerability DB:\n  Version: 2\n  UpdatedAt: 2026-11-06 12:55:02.577403897 +0000 UTC\n  NextUpdate: 2026-11-07 12:55:02.577403513 +0000 UTC\n  DownloadedAt: 2026-11-06 17:05:27.801953635 +0000 UTC"
+    },
+    "finished_at": "2026-11-06T17:05:56.229140+00:00"
   },
   "policy": {
     "id": "releaseguard-v1",
@@ -40,39 +41,57 @@
           "status": "pass",
           "detail": "pytest terminó con código 0.",
           "observed": {
-            "tests": 25,
+            "tests": 29,
             "failures": 0,
             "errors": 0,
             "skipped": 0
           }
         },
         "build": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "docker build terminó con código 0."
         },
         "health": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "HTTP 200 en /health. Docker HEALTHCHECK: healthy.",
+          "observed": {
+            "http_status": 200,
+            "body": {
+              "status": "ok"
+            }
+          },
+          "docker_status": "healthy"
         },
         "nonroot": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "UID real/efectivo/guardado/fs del proceso: [10001, 10001, 10001, 10001].",
+          "observed": {
+            "uids": [
+              10001,
+              10001,
+              10001,
+              10001
+            ]
+          }
         },
         "scan": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "counts": {
+            "UNKNOWN": 0,
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 0,
+            "CRITICAL": 0
+          },
+          "findings": [],
+          "detail": "0 hallazgos HIGH/CRITICAL. Incluye vulnerabilidades sin corrección."
         }
       },
-      "decision": "incomplete",
-      "image_id": null,
+      "decision": "approved",
+      "image_id": "sha256:5fc21d7daa0e060bc95490aa880ec928411114264fa65bd88a9eaf79798dd542",
       "assertion": {
-        "status": "fail",
-        "mismatches": [
-          "build: esperado pass, observado not_run",
-          "health: esperado pass, observado not_run",
-          "nonroot: esperado pass, observado not_run",
-          "scan: esperado pass, observado not_run"
-        ]
+        "status": "pass",
+        "mismatches": []
       }
     },
     {
@@ -87,39 +106,55 @@
           "status": "pass",
           "detail": "pytest terminó con código 0.",
           "observed": {
-            "tests": 25,
+            "tests": 29,
             "failures": 0,
             "errors": 0,
             "skipped": 0
           }
         },
         "build": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "docker build terminó con código 0."
         },
         "health": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "fail",
+          "detail": "HTTP 503 en /health. Docker HEALTHCHECK: unhealthy.",
+          "observed": {
+            "http_status": 503,
+            "body": "{\"status\":\"unavailable\"}"
+          },
+          "docker_status": "unhealthy"
         },
         "nonroot": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "UID real/efectivo/guardado/fs del proceso: [10001, 10001, 10001, 10001].",
+          "observed": {
+            "uids": [
+              10001,
+              10001,
+              10001,
+              10001
+            ]
+          }
         },
         "scan": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "counts": {
+            "UNKNOWN": 0,
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 0,
+            "CRITICAL": 0
+          },
+          "findings": [],
+          "detail": "0 hallazgos HIGH/CRITICAL. Incluye vulnerabilidades sin corrección."
         }
       },
-      "decision": "incomplete",
-      "image_id": null,
+      "decision": "blocked",
+      "image_id": "sha256:2db387d6266f477cedb752179d19d65c1550d4c1f8668fa411e9ba06af91edda",
       "assertion": {
-        "status": "fail",
-        "mismatches": [
-          "build: esperado pass, observado not_run",
-          "health: esperado fail, observado not_run",
-          "nonroot: esperado pass, observado not_run",
-          "scan: esperado pass, observado not_run"
-        ]
+        "status": "pass",
+        "mismatches": []
       }
     },
     {
@@ -134,56 +169,186 @@
           "status": "pass",
           "detail": "pytest terminó con código 0.",
           "observed": {
-            "tests": 25,
+            "tests": 29,
             "failures": 0,
             "errors": 0,
             "skipped": 0
           }
         },
         "build": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "docker build terminó con código 0."
         },
         "health": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "detail": "HTTP 200 en /health. Docker HEALTHCHECK: healthy.",
+          "observed": {
+            "http_status": 200,
+            "body": {
+              "status": "ok"
+            }
+          },
+          "docker_status": "healthy"
         },
         "nonroot": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "fail",
+          "detail": "UID real/efectivo/guardado/fs del proceso: [0, 0, 0, 0].",
+          "observed": {
+            "uids": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
         },
         "scan": {
-          "status": "not_run",
-          "detail": "No ejecutado: requiere una imagen y Docker disponible."
+          "status": "pass",
+          "counts": {
+            "UNKNOWN": 0,
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 0,
+            "CRITICAL": 0
+          },
+          "findings": [],
+          "detail": "0 hallazgos HIGH/CRITICAL. Incluye vulnerabilidades sin corrección."
         }
       },
-      "decision": "incomplete",
-      "image_id": null,
+      "decision": "blocked",
+      "image_id": "sha256:7ed39a2519633991b99581c5f792069fd62ddb15ac4f39a966c3565bbc169f1d",
       "assertion": {
-        "status": "fail",
-        "mismatches": [
-          "build: esperado pass, observado not_run",
-          "health: esperado pass, observado not_run",
-          "nonroot: esperado fail, observado not_run",
-          "scan: esperado pass, observado not_run"
-        ]
+        "status": "pass",
+        "mismatches": []
       }
     }
   ],
-  "laboratory_status": "fail",
-  "application_decision": "incomplete",
+  "laboratory_status": "pass",
+  "application_decision": "approved",
   "files": [
     {
+      "path": "candidate/build.log",
+      "sha256": "a0837ef16d47f35b298b7aea8eac19e685ee9fda0a636de2b88963121c389fb0"
+    },
+    {
+      "path": "candidate/container.log",
+      "sha256": "bfaf3428811c53bd9aca7e6bd43ddd22f42943804db50415e135f7cd3722da4b"
+    },
+    {
+      "path": "candidate/docker-health.json",
+      "sha256": "4f2a4c342b1506c9103f49013126d55328e0bac67e98ba2d46da163b2446fa92"
+    },
+    {
+      "path": "candidate/health.log",
+      "sha256": "552ab596f527b64a4aa6b6878666175a3c2fbc9238d0dc8fd66610cb7ae3c5bf"
+    },
+    {
+      "path": "candidate/image.json",
+      "sha256": "c83227d624e820009eeec20ed06c40693bcd975259f26fd4ecd691f524117321"
+    },
+    {
+      "path": "candidate/start.log",
+      "sha256": "169ea0bbdec32d98ef10f5fc9e966a5241451ddd326352e082891fcd1f2e7405"
+    },
+    {
+      "path": "candidate/trivy.json",
+      "sha256": "acb3a4259021a7c5dd57c3b0efac2d803ceae3ea884df542c6a5eae77f524084"
+    },
+    {
+      "path": "candidate/trivy.log",
+      "sha256": "03fdc513405701e399ed44833be6acde72a9dd8439957508c9ba730ce84d9ea4"
+    },
+    {
+      "path": "candidate/user.log",
+      "sha256": "479158fa8d594e2e83a6234dc4247e0986efb1dc8d7789c9a25e2c1f53007fae"
+    },
+    {
       "path": "docker-preflight.log",
-      "sha256": "189eafd351ec9d4b6d50cb0946920dff35b6d015ceb79da855edb778d014a5da"
+      "sha256": "6bd60857f0062defe4edbffc3b3e49ecd7b055a2598326793fc1cfb435587e0d"
+    },
+    {
+      "path": "export.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "health-failure/build.log",
+      "sha256": "2ff96679309379adc0b6b0a8124fa16de4940fd7bd63f8ad4f55727ee155330c"
+    },
+    {
+      "path": "health-failure/container.log",
+      "sha256": "a30f30b467d18ec6b47e2c10a7864a97bf1741c9c0cf4267824fdf0f4c13b941"
+    },
+    {
+      "path": "health-failure/docker-health.json",
+      "sha256": "8696b81f84ed7268130a8e19e76ba4d59f902803c0c7b024fadb73ebf8bce19f"
+    },
+    {
+      "path": "health-failure/health.log",
+      "sha256": "ab4a4f639f51d542845b6ba124627186b0e61558262f5b17001257656266d98a"
+    },
+    {
+      "path": "health-failure/image.json",
+      "sha256": "495ced76d546a2a3124af9f0b2c02532671a309c5b10f34e647c1587e552c80d"
+    },
+    {
+      "path": "health-failure/start.log",
+      "sha256": "b38d265ef90c702f914f5eec6610e4a63ecf44ecad9bdd68ab51d750c26bfd32"
+    },
+    {
+      "path": "health-failure/trivy.json",
+      "sha256": "472cd17248901d84c5c9b191dbba8883911955a8189c9b394e5975b057da750e"
+    },
+    {
+      "path": "health-failure/trivy.log",
+      "sha256": "de6a375b977fae06da2186948b72d729a0f25f4c3b11aab505bef5f11687ac6d"
+    },
+    {
+      "path": "health-failure/user.log",
+      "sha256": "479158fa8d594e2e83a6234dc4247e0986efb1dc8d7789c9a25e2c1f53007fae"
+    },
+    {
+      "path": "root-user/build.log",
+      "sha256": "1962eec60518386910010850c667d6f20a3bf4c3eab9c75d13e4630d7134ab5b"
+    },
+    {
+      "path": "root-user/container.log",
+      "sha256": "1155e0708ee56224a529b4fe6e0815a0dbcbea0fe48d28dd7992cc1d8043591d"
+    },
+    {
+      "path": "root-user/docker-health.json",
+      "sha256": "18eb2ca6589d871c1e7b019e9bac36aa3831d5490c0382d7efe98f30d842efd5"
+    },
+    {
+      "path": "root-user/health.log",
+      "sha256": "552ab596f527b64a4aa6b6878666175a3c2fbc9238d0dc8fd66610cb7ae3c5bf"
+    },
+    {
+      "path": "root-user/image.json",
+      "sha256": "0c9f02561a994dd8a00523f6320fe90a1e9290dc0f8460941024220a5c558245"
+    },
+    {
+      "path": "root-user/start.log",
+      "sha256": "91f8267d057fa45b8e223bb9b3066a82b126ccad178db2b374df8f827ba5e082"
+    },
+    {
+      "path": "root-user/trivy.json",
+      "sha256": "0368579f85c975ad35683e18979e056112424ccf1d172d75273a895451ca335d"
+    },
+    {
+      "path": "root-user/trivy.log",
+      "sha256": "4a663c9ff6c797999740eac5b5e5479ccdb93d6f2d7ff74614682d5f8b51b0f2"
+    },
+    {
+      "path": "root-user/user.log",
+      "sha256": "53ef9ffeacdff821d902ab1cc3cc1b13f93e761055cf34eb7e0040c478ed9ad3"
     },
     {
       "path": "tests.log",
-      "sha256": "bf434d92d4ff14f6bb37d4d6ad7c93d144c1b0b8a5d5f21ed34db6ba35ffb339"
+      "sha256": "ee33812e1ea732dfee64cb18e7e590efd97a802e5550c5990e26ab795d7e0c35"
     },
     {
       "path": "tests.xml",
-      "sha256": "91fa0c4c494535bdb3c8bf050708f43a4aa8179e0866e3232e09cd9fbed3d9ae"
+      "sha256": "2f1a5f1e678717e7974d38a282522de1adfad0f51a5e8f4d710c73c00a77e81c"
     }
   ]
 }

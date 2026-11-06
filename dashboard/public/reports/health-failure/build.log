@@ -1,0 +1,44 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.37kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-alpine@sha256:1e1f6334529d1fb26a2ef619d7cffb30a7c7d7cc1cc7338ebee283a58d1aeaca
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 130B done
+#3 DONE 0.0s
+
+#4 [healthy 1/6] FROM docker.io/library/python:3.13-alpine@sha256:1e1f6334529d1fb26a2ef619d7cffb30a7c7d7cc1cc7338ebee283a58d1aeaca
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 728B done
+#5 DONE 0.0s
+
+#6 [healthy 5/6] RUN pip install --no-cache-dir --require-hashes -r requirements.txt     && pip uninstall --yes pip     && rm -rf /usr/local/lib/python3.13/ensurepip
+#6 CACHED
+
+#7 [healthy 2/6] WORKDIR /app
+#7 CACHED
+
+#8 [healthy 3/6] RUN addgroup -g 10001 app && adduser -D -H -u 10001 -G app app
+#8 CACHED
+
+#9 [healthy 4/6] COPY requirements.txt ./
+#9 CACHED
+
+#10 [healthy 6/6] COPY --chown=10001:10001 api ./api
+#10 CACHED
+
+#11 [broken-health 1/1] COPY --chown=10001:10001 laboratory/broken_health.py /app/broken_health.py
+#11 DONE 7.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.8s done
+#12 writing image sha256:2db387d6266f477cedb752179d19d65c1550d4c1f8668fa411e9ba06af91edda done
+#12 naming to docker.io/library/releaseguard-lab:2aa2987e18-health-failure done
+#12 DONE 0.8s
